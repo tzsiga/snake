@@ -53,42 +53,50 @@ Snake.elements.forEach(function(part) {
   GT.element.appendChild(part);
 });
 
-GT.updateState = function () {
-  // update first element, copy to others
-  
-  Snake.pos.left = parseInt(Snake.elements[0].style.left);
-  Snake.pos.top = parseInt(Snake.elements[0].style.top);
+Snake.update = function () {
+  Snake.elements.forEach(function(part) {
+    Snake.updateElement(part);
+  });
+};
+
+Snake.updateElement = function (element) {
+  Snake.pos.left = parseInt(element.style.left);
+  Snake.pos.top = parseInt(element.style.top);
   var newPos = 0;
 
   if (Snake.direction === Direction.left) {
     newPos = Snake.pos.left - inc;
     if (newPos < 0) {
-      Snake.elements[0].style.left = ((GT.width - 1) * inc) + unit;
+      element.style.left = ((GT.width - 1) * inc) + unit;
     } else {
-      Snake.elements[0].style.left = newPos + unit;
+      element.style.left = newPos + unit;
     }
   } else if (Snake.direction === Direction.right) {
     newPos = Snake.pos.left + inc;
     if (newPos > (GT.width - 1) * inc) {
-      Snake.elements[0].style.left = 0;
+      element.style.left = 0;
     } else {
-	    Snake.elements[0].style.left = newPos + unit;
+	    element.style.left = newPos + unit;
     }
   } else if (Snake.direction === Direction.top) {
     newPos = Snake.pos.top - inc;
     if (newPos < 0) {
-      Snake.elements[0].style.top = ((GT.height - 1) * inc) + unit;
+      element.style.top = ((GT.height - 1) * inc) + unit;
     } else {
-      Snake.elements[0].style.top = newPos + unit;
+      element.style.top = newPos + unit;
     }
   } else if (Snake.direction === Direction.bottom) {
     newPos = Snake.pos.top + inc;
     if (newPos > (GT.height - 1) * inc) {
-      Snake.elements[0].style.top = 0;
+      element.style.top = 0;
     } else {
-      Snake.elements[0].style.top = newPos + unit;
+      element.style.top = newPos + unit;
     }
   }
+}
+
+GT.updateState = function () {
+	Snake.update();
 }
 
 // key handler
