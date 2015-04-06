@@ -29,7 +29,7 @@ body.appendChild(GT.element);
 
 var Snake = {};
 Snake.pos = {};
-Snake.direction = Direction.bottom;
+Snake.direction = Direction.right;
 
 Snake.createPart = function (top, left) {
   var element = document.createElement('div');
@@ -44,9 +44,11 @@ Snake.createPart = function (top, left) {
 
 Snake.elements = [
   Snake.createPart('0', '0'),
-  Snake.createPart(inc + unit, '0'),
+  Snake.createPart(1 * inc + unit, '0'),
   Snake.createPart(2 * inc + unit, '0'),
-  Snake.createPart(3 * inc + unit, '0')
+  Snake.createPart(3 * inc + unit, '0'),
+  Snake.createPart(4 * inc + unit, '0'),
+  Snake.createPart(5 * inc + unit, '0')
 ];
 
 Snake.elements.forEach(function(part) {
@@ -54,39 +56,44 @@ Snake.elements.forEach(function(part) {
 });
 
 Snake.update = function () {
-  Snake.elements.forEach(function(part) {
-    Snake.updateElement(part);
-  });
+  // copy others
+	for (var i = Snake.elements.length - 1; i > 0; --i) {
+    Snake.elements[i].style.left = Snake.elements[i - 1].style.left;
+    Snake.elements[i].style.top = Snake.elements[i - 1].style.top;
+  }
+
+  // update first element
+  Snake.updateElement(Snake.elements[0]);
 };
 
 Snake.updateElement = function (element) {
-  Snake.pos.left = parseInt(element.style.left);
-  Snake.pos.top = parseInt(element.style.top);
+  var left = parseInt(element.style.left);
+  var top = parseInt(element.style.top);
   var newPos = 0;
 
   if (Snake.direction === Direction.left) {
-    newPos = Snake.pos.left - inc;
+    newPos = left - inc;
     if (newPos < 0) {
       element.style.left = ((GT.width - 1) * inc) + unit;
     } else {
       element.style.left = newPos + unit;
     }
   } else if (Snake.direction === Direction.right) {
-    newPos = Snake.pos.left + inc;
+    newPos = left + inc;
     if (newPos > (GT.width - 1) * inc) {
       element.style.left = 0;
     } else {
 	    element.style.left = newPos + unit;
     }
   } else if (Snake.direction === Direction.top) {
-    newPos = Snake.pos.top - inc;
+    newPos = top - inc;
     if (newPos < 0) {
       element.style.top = ((GT.height - 1) * inc) + unit;
     } else {
       element.style.top = newPos + unit;
     }
   } else if (Snake.direction === Direction.bottom) {
-    newPos = Snake.pos.top + inc;
+    newPos = top + inc;
     if (newPos > (GT.height - 1) * inc) {
       element.style.top = 0;
     } else {
