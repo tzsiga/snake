@@ -62,7 +62,7 @@ Snake.update = function () {
     Snake.elements[i].style.top = Snake.elements[i - 1].style.top;
   }
 
-  // update first element
+  // update snake head
   Snake.updateElement(Snake.elements[0]);
 };
 
